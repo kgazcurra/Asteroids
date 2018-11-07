@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using KennethDevelops.ProLibrary.Managers;
 using UnityEngine;
 
 public class Player : MonoBehaviour{
@@ -7,20 +6,24 @@ public class Player : MonoBehaviour{
 	public float impulseSpeed = 3f;
 	public float rotateAngle = 100f;
 
+	public Transform bulletSpawn;
+
 	private Rigidbody _rb;
 	
-	// Use this for initialization
+	
 	void Start (){
 		_rb = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxisRaw("Vertical") == 1){
+		if (Input.GetAxisRaw("Vertical") == 1)
 			Impulse();
-		}
 		
 		Rotate(Input.GetAxisRaw("Horizontal"));
+
+		if (Input.GetKeyDown(KeyCode.Space)){
+			PoolManager.GetInstance("BulletPool").AcquireObject<Bullet>(bulletSpawn.position, transform.rotation);
+		}
 	}
 
 	private void Impulse(){
